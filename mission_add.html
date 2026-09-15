@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="레오엑스">
+    <title>Leo-x :: 최고관리자 - 미션 추가</title>
+
+    <!-- ===== 어드민 공통 (기존 레이아웃 include 와 동일) ===== -->
+    <link rel="stylesheet" href="/common_assets/css/jquery-ui.min.1.13.2.css">
+    <link rel="stylesheet" href="/common_assets/css/font.css">
+    <link rel="stylesheet" href="/common_assets/css/reset.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xpressengine/xeicon@2.3.3/xeicon.min.css">
+    <link rel="stylesheet" href="/common_assets/css/style.css">
+    <link rel="stylesheet" href="/common_assets/css/common.css">
+
+    <script src="/common_assets/js/jquery.min.3.7.js"></script>
+    <script>window.jQuery || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"><\/script>')</script>
+    <script src="/common_assets/js/jquery-ui.min.1.13.2.js"></script>
+    <script>(window.jQuery && jQuery.ui) || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"><\/script>')</script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <!-- ▼ 로컬 미리보기 전용 (프로젝트 반영 시 이 블록은 삭제) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css">
+    <style>
+      body { margin: 0; background: #f5f6f8; font-family: Pretendard, "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; color: #222; -webkit-font-smoothing: antialiased; }
+      .lx-shell { display: flex; min-height: 100vh; }
+      .lx-side { zoom: .8; width: 250px; flex: none; background: #fff; border-right: 1px solid #e4e7ec; padding: 34px 20px; }
+      .lx-side__title { font-size: 20px; font-weight: 700; margin: 0 0 24px 6px; letter-spacing: -0.02em; }
+      .lx-side__item { display: block; padding: 10px 14px; border-radius: 7px; font-size: 14px; color: #333; text-decoration: none; }
+      .lx-side__item.is-active { background: #4c6ed7; color: #fff; font-weight: 600; }
+      .lx-side__sub { list-style: none; margin: 8px 0 14px; padding: 0 0 0 14px; }
+      .lx-side__sub li a { display: block; padding: 8px 8px; font-size: 13.5px; color: #555; text-decoration: none; border-radius: 6px; }
+      .lx-side__sub li a:hover { background: #f5f6f8; }
+      .lx-side__sub li.is-current a { color: #222; font-weight: 700; }
+      .lx-side__sub li.is-current a::after { content: ""; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #4c6ed7; margin-left: 6px; vertical-align: top; margin-top: 3px; }
+      .lx-side__divider { border: 0; border-top: 1px solid #eceef2; margin: 14px 0; }
+      .lx-content { flex: 1; min-width: 0; padding: 28px 32px 60px; }
+    </style>
+    <!-- ▲ 로컬 미리보기 전용 -->
+
+    <!-- ===== 페이지 전용 ===== -->
+    <link href="/public/assets/css/mission/mission_list.css?v=2" rel="stylesheet" type="text/css">
+    <link href="/public/assets/css/mission/mission_add.css?v=1" rel="stylesheet" type="text/css">
+    <link href="public/assets/css/mission/mission_list.css?v=2" rel="stylesheet" type="text/css"><!-- 로컬 미리보기용 (반영 시 삭제) -->
+    <link href="public/assets/css/mission/mission_add.css?v=1" rel="stylesheet" type="text/css"><!-- 로컬 미리보기용 (반영 시 삭제) -->
+</head>
+<body>
+<div class="lx-shell">
+
+  <!-- ===== 좌측 네비 (실서비스에서는 공통 include — nav_snippet.html 참고) ===== -->
+  <aside class="lx-side">
+    <h1 class="lx-side__title">라이더 운영 설정</h1>
+    <a class="lx-side__item is-active" href="#">라이더 수행 미션</a>
+    <ul class="lx-side__sub">
+      <li class="is-current"><a href="mission_add.html">미션 추가</a></li>
+      <li><a href="mission_list.html">미션 내역</a></li>
+    </ul>
+    <hr class="lx-side__divider">
+    <a class="lx-side__item" href="#">라이더 앱 바텀시트 관리</a>
+    <a class="lx-side__item" href="#">허브 그룹 관리</a>
+  </aside>
+
+  <main class="lx-content">
+
+  <!-- ▼▼▼ 여기부터 컨텐츠 영역 ▼▼▼ -->
+  <div id="missionAdd" class="mc-page">
+    <form class="mc-card" id="maForm" novalidate>
+      <div class="mc-card__head">
+        <span class="mc-card__title">미션 추가</span>
+        <span class="mc-card__hint"><i class="xi-info-o"></i> 라이더 미션을 추가하고, 보상을 지급해보세요!</span>
+      </div>
+
+      <div class="ma-form">
+
+        <!-- 브랜드 (배달대행사) -->
+        <div class="ma-row">
+          <div class="ma-label">브랜드<em>*</em></div>
+          <div class="ma-value">
+            <select class="ma-select" id="maAgency" name="agency">
+              <option value="">선택해주세요</option>
+              <option value="GR">그라이더</option>
+              <option value="GRP">그라이더플러스</option>
+              <option value="ALL">그라이더 + 그라이더플러스</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 지역 선택 -->
+        <div class="ma-row">
+          <div class="ma-label">지역 선택<em>*</em></div>
+          <div class="ma-value">
+            <select class="ma-select2" id="maRegions" name="regions" multiple data-placeholder="적용 지역을 선택해주세요"></select>
+            <div class="ma-hint">지역별로 미션이 각각 생성됩니다. (여러 지역 선택 시 지역 수만큼 미션이 만들어집니다)</div>
+          </div>
+        </div>
+
+        <!-- 화주사 선택 -->
+        <div class="ma-row">
+          <div class="ma-label">화주사 선택<em>*</em></div>
+          <div class="ma-value">
+            <div class="ma-box" id="maPartnerBox"><div class="ma-grid" id="maPartners"></div></div>
+            <div class="ma-hint">전체 주문 또는 개별 화주사 최대 3개까지 선택할 수 있습니다.</div>
+          </div>
+        </div>
+
+        <!-- 제목 / 내용 -->
+        <div class="ma-row">
+          <div class="ma-label">미션 제목<em>*</em></div>
+          <div class="ma-value"><input type="text" class="ma-input ma-input--full" id="maTitle" name="title" maxlength="60" placeholder="예) 저녁 피크타임 깜짝미션"></div>
+        </div>
+        <div class="ma-row">
+          <div class="ma-label">미션 내용</div>
+          <div class="ma-value"><textarea class="ma-textarea" id="maDesc" name="description" maxlength="500"></textarea></div>
+        </div>
+
+        <!-- 미션 타입 -->
+        <div class="ma-row ma-row--tight">
+          <div class="ma-label">미션 타입<em>*</em></div>
+          <div class="ma-value">
+            <div class="ma-choices">
+              <label class="ma-radio"><input type="radio" name="kind" value="REPEAT" checked><span>반복</span> <i class="xi-help ma-help" title="매일/매주/매월 같은 조건으로 반복 진행"></i></label>
+              <label class="ma-radio"><input type="radio" name="kind" value="PERIOD"><span>기간한정</span> <i class="xi-help ma-help" title="지정한 기간 동안만 진행 (최대 한 달)"></i></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 반복 미션 -->
+        <div class="ma-section" id="secRepeat">
+          <div class="ma-section__title">반복 미션</div>
+          <div class="ma-section__body">
+            <div class="ma-row">
+              <div class="ma-label">반복 기준<em>*</em></div>
+              <div class="ma-value"><div class="ma-choices">
+                <label class="ma-radio"><input type="radio" name="repeatBasis" value="DAILY" checked><span>일일</span> <i class="xi-help ma-help" title="매일 초기화"></i></label>
+                <label class="ma-radio"><input type="radio" name="repeatBasis" value="WEEKLY"><span>주간</span> <i class="xi-help ma-help" title="매주 월요일 초기화"></i></label>
+                <label class="ma-radio"><input type="radio" name="repeatBasis" value="MONTHLY"><span>월간</span> <i class="xi-help ma-help" title="매월 1일 초기화"></i></label>
+                <label class="ma-radio"><input type="radio" name="repeatBasis" value="WEEKDAY"><span>요일</span> <i class="xi-help ma-help" title="선택한 요일에만 진행"></i></label>
+              </div>
+              <div class="ma-choices" id="maWeekdays" hidden style="margin-top:6px">
+                <label class="ma-check"><input type="checkbox" name="weekday" value="1"><span>월</span></label>
+                <label class="ma-check"><input type="checkbox" name="weekday" value="2"><span>화</span></label>
+                <label class="ma-check"><input type="checkbox" name="weekday" value="3"><span>수</span></label>
+                <label class="ma-check"><input type="checkbox" name="weekday" value="4"><span>목</span></label>
+                <label class="ma-check"><input type="checkbox" name="weekday" value="5"><span>금</span></label>
+                <label class="ma-check"><input type="checkbox" name="weekday" value="6"><span>토</span></label>
+                <label class="ma-check"><input type="checkbox" name="weekday" value="0"><span>일</span></label>
+              </div></div>
+            </div>
+            <div class="ma-row">
+              <div class="ma-label">기준 시간<em>*</em></div>
+              <div class="ma-value"><div class="ma-choices">
+                <label class="ma-radio"><input type="radio" name="baseTimeR" value="ASSIGNED" checked><span>배정한 시간</span></label>
+                <label class="ma-radio"><input type="radio" name="baseTimeR" value="COMPLETED"><span>완료한 시간</span></label>
+              </div></div>
+            </div>
+            <div class="ma-row">
+              <div class="ma-label">미션 진행 시간<em>*</em></div>
+              <div class="ma-value">
+                <div class="ma-list" id="maTimeRanges"></div>
+                <div class="ma-hint">※ 오전 00:00 ~ 오전 00:00 설정 시 24시간 진행</div>
+              </div>
+            </div>
+            <div class="ma-row">
+              <div class="ma-label">공유콜 포함여부<em>*</em></div>
+              <div class="ma-value"><div class="ma-choices">
+                <label class="ma-radio"><input type="radio" name="sharedR" value="ALL" checked><span>자사+공유포함</span></label>
+                <label class="ma-radio"><input type="radio" name="sharedR" value="OWN"><span>자사만</span></label>
+                <label class="ma-radio"><input type="radio" name="sharedR" value="SHARED"><span>공유만</span></label>
+              </div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 기간 한정 미션 -->
+        <div class="ma-section" id="secPeriod" hidden>
+          <div class="ma-section__title">기간 한정 미션</div>
+          <div class="ma-section__body">
+            <div class="ma-row">
+              <div class="ma-label">기간 선택<em>*</em></div>
+              <div class="ma-value">
+                <div class="ma-range">
+                  <input type="datetime-local" class="ma-input" id="maPeriodStart" name="periodStart">
+                  <span>~</span>
+                  <input type="datetime-local" class="ma-input" id="maPeriodEnd" name="periodEnd">
+                </div>
+                <div class="ma-hint">※ 최대 한 달까지 선택 가능합니다.</div>
+              </div>
+            </div>
+            <div class="ma-row">
+              <div class="ma-label">이벤트 진행<em>*</em></div>
+              <div class="ma-value"><div class="ma-choices">
+                <label class="ma-radio"><input type="radio" name="dailyReset" value="1"><span>매일 초기화</span></label>
+                <label class="ma-radio"><input type="radio" name="dailyReset" value="0" checked><span>초기화 없음</span></label>
+              </div></div>
+            </div>
+            <div class="ma-row">
+              <div class="ma-label">기준 시간<em>*</em></div>
+              <div class="ma-value"><div class="ma-choices">
+                <label class="ma-radio"><input type="radio" name="baseTimeP" value="ASSIGNED" checked><span>배정한 시간</span></label>
+                <label class="ma-radio"><input type="radio" name="baseTimeP" value="COMPLETED"><span>완료한 시간</span></label>
+              </div></div>
+            </div>
+            <div class="ma-row">
+              <div class="ma-label">미션 진행 시간<em>*</em></div>
+              <div class="ma-value">
+                <div class="ma-range">
+                  <input type="time" class="ma-input" id="maPeriodTimeFrom" value="00:00" style="width:130px">
+                  <span>~</span>
+                  <input type="time" class="ma-input" id="maPeriodTimeTo" value="00:00" style="width:130px">
+                </div>
+                <div class="ma-hint">※ 00:00 ~ 00:00 설정 시 기간 내 24시간 진행</div>
+              </div>
+            </div>
+            <div class="ma-row">
+              <div class="ma-label">공유콜 포함여부<em>*</em></div>
+              <div class="ma-value"><div class="ma-choices">
+                <label class="ma-radio"><input type="radio" name="sharedP" value="ALL" checked><span>자사+공유포함</span></label>
+                <label class="ma-radio"><input type="radio" name="sharedP" value="OWN"><span>자사만</span></label>
+                <label class="ma-radio"><input type="radio" name="sharedP" value="SHARED"><span>공유만</span></label>
+              </div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 미션 카운팅 조건 -->
+        <div class="ma-row ma-row--tight">
+          <div class="ma-label">미션 카운팅 조건</div>
+          <div class="ma-value"><div class="ma-choices">
+            <label class="ma-check"><input type="checkbox" id="maCountDistance" name="countDistance"><span>거리</span></label>
+            <label class="ma-check"><input type="checkbox" id="maCountZone" name="countZone"><span>권역</span></label>
+          </div></div>
+        </div>
+        <div class="ma-section" id="secCounting" hidden>
+          <div class="ma-section__title">미션 카운팅 조건 <i class="xi-help ma-help" title="체크한 조건을 모두 만족하는 콜만 미션 건수로 카운팅합니다"></i></div>
+          <div class="ma-section__body">
+            <div class="ma-row" id="rowDistance" hidden>
+              <div class="ma-label">거리 <i class="xi-help ma-help" title="픽업지 → 도착지 직선거리 기준"></i></div>
+              <div class="ma-value"><label class="ma-unit ma-unit--wide"><input type="number" id="maDistance" min="0" step="100" placeholder="1000"><span>m 이상 콜일 때 카운팅</span></label></div>
+            </div>
+            <div class="ma-row" id="rowZone" hidden>
+              <div class="ma-label">권역</div>
+              <div class="ma-value">
+                <select class="ma-select" id="maZone"><option value="">권역을 선택해주세요</option><option value="Z1">강남 권역</option><option value="Z2">강동 권역</option><option value="Z3">천안 권역</option><option value="Z4">대전 권역</option></select>
+                <div class="ma-hint">선택한 권역 내 도착지 콜만 "권역 완료"로 별도 카운팅됩니다.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 선착순 지급 -->
+        <div class="ma-row ma-row--tight">
+          <div class="ma-label">선착순 지급<em>*</em></div>
+          <div class="ma-value"><div class="ma-choices">
+            <label class="ma-radio"><input type="radio" name="firstCome" value="1"><span>사용</span></label>
+            <label class="ma-radio"><input type="radio" name="firstCome" value="0" checked><span>미사용</span></label>
+          </div></div>
+        </div>
+        <div class="ma-section" id="secFirstCome" hidden>
+          <div class="ma-section__title">선착순 지급</div>
+          <div class="ma-section__body">
+            <div class="ma-row">
+              <div class="ma-label">선착순<em>*</em></div>
+              <div class="ma-value"><label class="ma-unit"><input type="number" id="maFirstComeN" min="1" placeholder="0"><span>명 까지 지급</span></label></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 미션 완료 조건 -->
+        <div class="ma-row ma-row--tight">
+          <div class="ma-label">미션 완료 조건<em>*</em></div>
+          <div class="ma-value"><div class="ma-choices">
+            <label class="ma-check"><input type="checkbox" id="maCondCommute" name="condCommute"><span>출퇴근</span></label>
+            <label class="ma-check"><input type="checkbox" id="maCondTime" name="condTime" checked><span>접수 후 완료 시간</span></label>
+            <label class="ma-check"><input type="checkbox" id="maCondFirstCall" name="condFirstCall"><span>가입 후 처음 콜 완료시에만 보상</span></label>
+          </div></div>
+        </div>
+        <div class="ma-section" id="secComplete">
+          <div class="ma-section__title">미션 완료 조건</div>
+          <div class="ma-section__body">
+            <div class="ma-row" id="rowCommute" hidden>
+              <div class="ma-label">출퇴근</div>
+              <div class="ma-value"><label class="ma-unit"><input type="number" id="maCommuteN" min="1" placeholder="0"><span>회 달성 시</span></label></div>
+            </div>
+            <div class="ma-row" id="rowTime">
+              <div class="ma-label"><span id="maTimeCondLabel">접수 후</span> 완료 시간</div>
+              <div class="ma-value"><label class="ma-unit ma-unit--wide"><input type="number" id="maLimitMin" min="1" step="5" value="60"><span>분 이내에 완료 시 카운팅</span></label>
+                <div class="ma-hint">기준 시간이 <b>배정한 시간</b>이면 배정→완료, <b>완료한 시간</b>이면 접수→완료 소요로 판정합니다.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 미션 보상 -->
+        <div class="ma-row ma-row--tight">
+          <div class="ma-label">미션 보상<em>*</em></div>
+          <div class="ma-value"><div class="ma-choices">
+            <label class="ma-radio"><input type="radio" name="rewardType" value="CASH" checked><span>캐시</span></label>
+          </div></div>
+        </div>
+        <div class="ma-section" id="secReward">
+          <div class="ma-section__title">미션 보상</div>
+          <div class="ma-section__body">
+            <div class="ma-list" id="maTiers"></div>
+            <div style="margin-top:10px; display:flex; align-items:center; gap:12px">
+              <button type="button" class="ma-btn-add" id="maTierAdd"><i class="xi-plus-min"></i> 추가</button>
+              <span class="ma-hint" style="margin:0">단계별 보상 · 건수 오름차순 · 최대 5단계 · 라이더가 도달한 <b>최상위 단계 1개만</b> 지급</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ma-footer">
+          <button type="button" class="ma-cancel" id="maCancel">취소</button>
+          <button type="submit" class="ma-submit" id="maSubmit">설정한 옵션으로 미션 추가</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- ▲▲▲ 컨텐츠 영역 끝 ▲▲▲ -->
+
+  </main>
+</div>
+
+<script src="/public/assets/js/mission/mission_add.js?v=1"></script>
+<script>window.MissionAdd || document.write('<script src="public/assets/js/mission/mission_add.js?v=1"><\/script>')</script><!-- 로컬 미리보기용 (반영 시 삭제) -->
+</body>
+</html>

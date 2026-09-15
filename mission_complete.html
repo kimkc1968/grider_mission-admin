@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="레오엑스">
+    <title>Leo-x :: 최고관리자 - 미션 완료 내역</title>
+
+    <!-- ===== 어드민 공통 (기존 레이아웃 include 와 동일) ===== -->
+    <link rel="stylesheet" href="/common_assets/css/jquery-ui.min.1.13.2.css">
+    <link rel="stylesheet" href="/common_assets/css/font.css">
+    <link rel="stylesheet" href="/common_assets/css/reset.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xpressengine/xeicon@2.3.3/xeicon.min.css">
+    <link rel="stylesheet" href="/common_assets/css/style.css">
+    <link rel="stylesheet" href="/common_assets/css/common.css">
+
+    <script src="/common_assets/js/jquery.min.3.7.js"></script>
+    <script>window.jQuery || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"><\/script>')</script>
+    <script src="/common_assets/js/jquery-ui.min.1.13.2.js"></script>
+    <script>(window.jQuery && jQuery.ui) || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"><\/script>')</script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <!-- ▼ 로컬 미리보기 전용 (프로젝트 반영 시 이 블록은 삭제) — 공통 css 없이도 레이아웃이 보이도록 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css">
+    <style>
+      body { margin: 0; background: #f5f6f8; font-family: Pretendard, "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; color: #222; -webkit-font-smoothing: antialiased; }
+      .lx-shell { display: flex; min-height: 100vh; }
+      .lx-side { zoom: .8; width: 250px; flex: none; background: #fff; border-right: 1px solid #e4e7ec; padding: 34px 20px; }
+      .lx-side__title { font-size: 20px; font-weight: 700; margin: 0 0 24px 6px; letter-spacing: -0.02em; }
+      .lx-side__item { display: block; padding: 10px 14px; border-radius: 7px; font-size: 14px; color: #333; text-decoration: none; }
+      .lx-side__item.is-active { background: #4c6ed7; color: #fff; font-weight: 600; }
+      .lx-side__sub { list-style: none; margin: 8px 0 14px; padding: 0 0 0 14px; }
+      .lx-side__sub li a { display: block; padding: 8px 8px; font-size: 13.5px; color: #555; text-decoration: none; border-radius: 6px; }
+      .lx-side__sub li a:hover { background: #f5f6f8; }
+      .lx-side__sub li.is-current a { color: #222; font-weight: 700; }
+      .lx-side__sub li.is-current a::after { content: ""; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #4c6ed7; margin-left: 6px; vertical-align: top; margin-top: 3px; }
+      .lx-side__new { display: inline-block; margin-left: 6px; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px; background: #e6f4ea; color: #2e7d4f; vertical-align: middle; }
+      .lx-side__divider { border: 0; border-top: 1px solid #eceef2; margin: 14px 0; }
+      .lx-content { flex: 1; min-width: 0; padding: 28px 32px 60px; }
+    </style>
+    <!-- ▲ 로컬 미리보기 전용 -->
+
+    <!-- ===== 페이지 전용 ===== -->
+    <link href="/public/assets/css/mission/mission_complete.css?v=1" rel="stylesheet" type="text/css">
+    <link href="public/assets/css/mission/mission_complete.css?v=1" rel="stylesheet" type="text/css"><!-- 로컬 미리보기용 상대경로 (반영 시 삭제) -->
+</head>
+<body>
+<div class="lx-shell">
+
+  <!-- ===== 좌측 네비 (실서비스에서는 공통 include — nav_snippet.html 참고) ===== -->
+  <aside class="lx-side">
+    <h1 class="lx-side__title">라이더 운영 설정</h1>
+    <a class="lx-side__item is-active" href="#">라이더 수행 미션</a>
+    <ul class="lx-side__sub">
+      <li><a href="#">미션 내역</a></li>
+      <li class="is-current"><a href="#">미션 완료 내역<span class="lx-side__new">NEW</span></a></li>
+      <li><a href="#">미션 추가</a></li>
+    </ul>
+    <hr class="lx-side__divider">
+    <a class="lx-side__item" href="#">라이더 앱 바텀시트 관리</a>
+    <a class="lx-side__item" href="#">허브 그룹 관리</a>
+  </aside>
+
+  <main class="lx-content">
+
+  <!-- ▼▼▼ 여기부터 컨텐츠 영역 — 기존 템플릿의 content 슬롯에 그대로 삽입 ▼▼▼ -->
+  <div id="missionComplete" class="mc-page">
+
+    <!-- 요약 -->
+    <div class="mc-card">
+      <div class="mc-card__head">
+        <span class="mc-card__title">미션 완료 내역</span>
+      </div>
+    <!-- 필터 -->
+      <div class="mc-card__body" style="padding-bottom:14px">
+        <div class="mc-filter">
+          <div class="mc-filter__row mc-filter__row--filters">
+            <div class="mc-filter__group">
+              <span class="mc-filter__label">미션 기간</span>
+              <div class="mc-range">
+                <input type="text" class="mc-input mc-input--date" id="mcFrom" readonly>
+                <span class="mc-range__arrow"><i class="xi-arrow-right"></i></span>
+                <input type="text" class="mc-input mc-input--date" id="mcTo" readonly>
+              </div>
+              <div class="mc-quick">
+                <button type="button" data-days="1">오늘</button>
+                <button type="button" data-days="7">7일</button>
+                <button type="button" data-days="30">30일</button>
+              </div>
+            </div>
+
+            <div class="mc-filter__group">
+              <span class="mc-filter__label">주문 제휴사</span>
+              <select class="mc-select mc-select2 mc-select2--multi" id="mcPartner" multiple data-placeholder="전체" style="width:220px">
+              <option value="ALL">전체</option>
+            </select>
+            </div>
+
+            <div class="mc-filter__group">
+              <span class="mc-filter__label">배달대행사</span>
+              <select class="mc-select" id="mcAgency">
+                <option value="">전체</option>
+              </select>
+            </div>
+
+            <div class="mc-filter__group">
+              <span class="mc-filter__label">미션 타입</span>
+              <select class="mc-select" id="mcType">
+                <option value="">전체</option>
+                <option value="RECEIPT">접수 후 미션</option>
+                <option value="DISPATCH">배차 후 미션</option>
+              </select>
+            </div>
+
+            <div class="mc-filter__group js-participant-only">
+              <span class="mc-filter__label">결과</span>
+              <select class="mc-select" id="mcResult">
+                <option value="">전체</option>
+                <option value="COMPLETED">달성</option>
+                <option value="INCOMPLETE">미달성</option>
+                <option value="PAID">지급완료</option>
+                <option value="PENDING">지급예정</option>
+                <option value="CANCELLED">지급취소</option>
+              </select>
+            </div>
+
+            <label class="mc-check js-participant-only">
+              <input type="checkbox" id="mcRejectOnly"> 미인정 있는 참여자만
+            </label>
+
+          </div>
+          <div class="mc-filter__row mc-filter__row--search">
+            <div class="mc-filter__group mc-filter__group--search">
+            <span class="mc-filter__label mc-filter__label--search"><i class="xi-search"></i> 검색</span>
+              <select class="mc-select" id="mcKeywordType" title="검색 카테고리">
+                <option value="ALL">전체</option>
+                <option value="MISSION">미션명</option>
+                <option value="REGION">지역</option>
+                <option value="PARTNER">화주사</option>
+                <option value="RIDER_CODE">라이더 코드</option>
+                <option value="RIDER_NAME">라이더 이름</option>
+              </select>
+              <span class="mc-search">
+                <input type="text" class="mc-input mc-input--search" id="mcKeyword" placeholder="미션명 · 지역 · 화주사 · 라이더 코드 · 이름">
+                <i class="xi-search"></i>
+              </span>
+              <button type="button" class="mc-btn mc-btn--primary" id="mcSearchBtn">조회</button>
+              <button type="button" class="mc-btn mc-btn--ghost" id="mcResetBtn" title="필터 초기화"><i class="xi-refresh"></i></button>
+            </div>
+
+            <span class="mc-filter__spacer"></span>
+            <button type="button" class="mc-btn mc-btn--green" id="mcExportBtn"><i class="xi-file-download-o"></i> 엑셀 다운로드</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 요약 + 목록 -->
+    <div class="mc-card">
+      <div class="mc-card__body mc-kpis-wrap">
+        <div class="mc-kpis">
+          <div class="mc-kpi">
+            <div class="mc-kpi__label">완료 미션</div>
+            <div class="mc-kpi__value"><span id="kpiMissions">—</span><small>개</small></div>
+          </div>
+          <div class="mc-kpi">
+            <div class="mc-kpi__label">참여인원</div>
+            <div class="mc-kpi__value"><span id="kpiParticipants">—</span><small>명</small></div>
+          </div>
+          <div class="mc-kpi">
+            <div class="mc-kpi__label">달성인원</div>
+            <div class="mc-kpi__value"><span id="kpiCompleted">—</span><small>명</small></div>
+          </div>
+          <div class="mc-kpi mc-kpi--point">
+            <div class="mc-kpi__label">완료율 <span title="Σ인정건 ÷ Σ수행건">(인정÷수행)</span></div>
+            <div class="mc-kpi__value"><span id="kpiCompleteRate">—</span><small>%</small></div>
+          </div>
+          <div class="mc-kpi mc-kpi--point">
+            <div class="mc-kpi__label">총 지급금액</div>
+            <div class="mc-kpi__value"><span id="kpiPaid">—</span><small>원</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mc-tabs">
+        <div class="mc-tab is-active" data-tab="mission">미션별 <span class="mc-tab__count">—</span></div>
+        <div class="mc-tab" data-tab="participant">참여자별 <span class="mc-tab__count">—</span></div>
+        <span class="mc-chip" id="mcMissionChip" style="display:none">
+          <i class="xi-filter"></i> <span class="js-chip-title"></span>
+          <button type="button" class="js-chip-clear" title="미션 고정 해제"><i class="xi-close"></i></button>
+        </span>
+      </div>
+
+      <div class="mc-table-wrap">
+        <table class="mc-table">
+          <thead id="mcThead"></thead>
+          <tbody id="mcTbody"></tbody>
+        </table>
+      </div>
+
+      <div class="mc-foot">
+        <span class="mc-foot__sum">—</span>
+        <span class="mc-pager"></span>
+      </div>
+    </div>
+
+  </div>
+  <!-- ▲▲▲ 컨텐츠 영역 끝 ▲▲▲ -->
+
+  </main>
+</div>
+
+<script src="/public/assets/js/mission/mission_complete.js?v=1"></script>
+<script>window.MissionComplete || document.write('<script src="public/assets/js/mission/mission_complete.js?v=1"><\/script>')</script><!-- 로컬 미리보기용 상대경로 (반영 시 삭제) -->
+</body>
+</html>

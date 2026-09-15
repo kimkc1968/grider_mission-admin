@@ -1,0 +1,85 @@
+/* =========================================================
+   미션 추가 (mission_add) — 레오엑스 어드민 톤앤매너
+   .ma- 프리픽스. 공통 .mc- 카드/버튼/뱃지 스타일은 mission_list.css 재사용
+   ========================================================= */
+.ma-form { padding: 6px 20px 24px; font-size: 13px; }
+.ma-row { display: grid; grid-template-columns: 160px 1fr; gap: 10px 14px; align-items: start; padding: 12px 0; }
+.ma-row--tight { padding: 8px 0; }
+.ma-label { color: var(--mc-text); padding-top: 8px; font-size: 13.5px; }
+.ma-label em { color: var(--mc-red); font-style: normal; margin-left: 2px; }
+.ma-value { min-width: 0; }
+.ma-hint { font-size: 12px; color: var(--mc-muted); margin-top: 6px; }
+.ma-hint--warn { color: var(--mc-amber); }
+
+.ma-input, .ma-select, .ma-textarea {
+  height: 36px; border: 1px solid #d5d9e0; border-radius: 6px; padding: 0 12px; font-size: 13px; color: var(--mc-text);
+  background: #fff; outline: none; font-family: inherit; box-sizing: border-box;
+}
+.ma-input:focus, .ma-select:focus, .ma-textarea:focus { border-color: var(--mc-blue); box-shadow: 0 0 0 2px var(--mc-blue-bg); }
+.ma-input::placeholder, .ma-textarea::placeholder { color: #a5abb6; }
+.ma-input.is-error, .ma-select.is-error, .ma-box.is-error { border-color: var(--mc-red); }
+.ma-input--full { width: 100%; }
+.ma-select { min-width: 200px; padding-right: 30px; appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23555' stroke-width='1.6'/></svg>");
+  background-repeat: no-repeat; background-position: right 12px center; }
+.ma-textarea { height: auto; min-height: 72px; width: 340px; max-width: 100%; padding: 8px 12px; resize: vertical; line-height: 1.5; }
+
+/* 단위 붙은 입력 */
+.ma-unit { display: inline-flex; align-items: center; height: 36px; border: 1px solid #d5d9e0; border-radius: 6px; background: #fff; overflow: hidden; }
+.ma-unit input { border: 0; height: 100%; padding: 0 10px; width: 90px; font-size: 13px; outline: none; font-family: inherit; text-align: right; background: transparent; color: var(--mc-text); }
+.ma-unit input::placeholder { color: #b6bcc7; }
+.ma-unit span { padding: 0 10px 0 4px; color: var(--mc-muted); font-size: 12.5px; white-space: nowrap; }
+.ma-unit.is-error { border-color: var(--mc-red); }
+.ma-unit--wide input { width: 130px; }
+
+/* 박스(체크 그리드) */
+.ma-box { border: 1px solid #e1e4ea; border-radius: 8px; padding: 12px 14px; background: #fff; }
+.ma-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 12px; }
+@media (max-width: 1100px) { .ma-grid { grid-template-columns: repeat(3, 1fr); } }
+
+/* 라디오 / 체크 */
+.ma-choices { display: flex; flex-wrap: wrap; gap: 6px 20px; align-items: center; min-height: 36px; }
+.ma-radio, .ma-check { display: inline-flex; align-items: center; gap: 7px; cursor: pointer; color: var(--mc-text); font-size: 13px; user-select: none; }
+.ma-radio input, .ma-check input { width: 17px; height: 17px; margin: 0; accent-color: var(--mc-blue); cursor: pointer; }
+.ma-check input:disabled + span, .ma-radio input:disabled + span { color: #b0b6c2; }
+.ma-help { color: #c0c5cf; font-size: 13px; cursor: help; vertical-align: -1px; }
+
+/* 하위 섹션 */
+.ma-section { background: #f7f8fa; border-radius: 8px; margin: 4px 0 6px; overflow: hidden; }
+.ma-section__title { font-size: 13px; color: var(--mc-text-2); padding: 10px 16px; background: #eef0f4; }
+.ma-section__body { padding: 4px 16px 10px; }
+.ma-section .ma-row { grid-template-columns: 146px 1fr; padding: 9px 0; }
+.ma-section[hidden] { display: none !important; }
+
+/* 시간 범위 행 / 단계 행 */
+.ma-range { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ma-range .ma-input { width: 220px; }
+.ma-range > span { color: var(--mc-muted); }
+.ma-list { display: flex; flex-direction: column; gap: 8px; }
+.ma-list__row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ma-tier-idx { width: 42px; color: var(--mc-muted); font-size: 12.5px; }
+.ma-btn-add { display: inline-flex; align-items: center; gap: 4px; height: 36px; padding: 0 14px; border: 1px solid #d5d9e0; background: #fff; border-radius: 6px; color: var(--mc-blue); font-weight: 600; cursor: pointer; font-size: 13px; font-family: inherit; }
+.ma-btn-add:hover { background: var(--mc-blue-bg); }
+.ma-btn-add[disabled] { opacity: .45; cursor: not-allowed; }
+.ma-btn-del { height: 36px; padding: 0 12px; border: 1px solid var(--mc-red-line); background: #fff; color: var(--mc-red); border-radius: 6px; cursor: pointer; font-size: 13px; font-family: inherit; }
+.ma-btn-del:hover { background: var(--mc-red-bg); }
+
+/* 하단 제출 */
+.ma-footer { display: flex; justify-content: center; gap: 10px; padding: 26px 0 6px; border-top: 1px solid var(--mc-line); margin-top: 10px; }
+.ma-submit { height: 42px; padding: 0 22px; border-radius: 6px; border: 0; background: var(--mc-blue); color: #fff; font-weight: 700; font-size: 14px; cursor: pointer; font-family: inherit; }
+.ma-submit:hover { background: #3f5fc4; }
+.ma-cancel { height: 42px; padding: 0 18px; border-radius: 6px; border: 1px solid #d5d9e0; background: #fff; color: var(--mc-text-2); font-size: 14px; cursor: pointer; font-family: inherit; }
+
+/* 요약 미리보기 (제출 확인 다이얼로그) */
+.ma-summary { text-align: left; font-size: 13px; line-height: 1.75; background: #f7f8fa; border-radius: 6px; padding: 12px 14px; }
+.ma-summary dt { color: var(--mc-muted); font-size: 12px; margin-top: 6px; }
+.ma-summary dd { margin: 0; color: var(--mc-text); font-weight: 600; }
+.ma-summary dl { margin: 0; }
+
+/* select2 (지역 다중 선택) */
+.ma-value .select2-container--default .select2-selection--multiple { min-height: 36px; border: 1px solid #d5d9e0; border-radius: 6px; padding: 2px 6px; }
+.ma-value .select2-container--default .select2-selection--multiple .select2-selection__choice { margin: 3px 4px 3px 0; padding: 3px 8px 3px 6px; border: 1px solid var(--mc-blue-line); background: var(--mc-blue-bg); color: #3b56b8; border-radius: 6px; font-size: 12.5px; }
+.ma-value .select2-container--default .select2-selection--multiple .select2-selection__choice__remove { color: #3b56b8; border: 0; background: transparent; margin-right: 4px; font-weight: 700; }
+.ma-value .select2-container--default .select2-search--inline .select2-search__field { height: 26px; margin: 2px 0; font-size: 13px; font-family: inherit; }
+.ma-value .select2-container--default.select2-container--focus .select2-selection--multiple { border-color: var(--mc-blue); }
+.ma-value .select2-container { width: 100% !important; }
