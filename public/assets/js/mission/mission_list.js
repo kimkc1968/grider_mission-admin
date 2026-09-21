@@ -1669,7 +1669,10 @@
 
     // 참여자별: 참여자 시트 + 주문 단위 시트
     API.byParticipant(f, 1, BIG, sort).done(function (res) {
-      var rows = res.content || [];
+      // 화면은 라이더 단위로 묶여 있지만 엑셀은 참여(라이더×미션) 단위 → 묶인 행을 다시 펼친다
+      var rows = [];
+      (res.content || []).forEach(function (r) { if (r.participations) rows = rows.concat(r.participations); else rows.push(r); });
+      var riderCount = (res.content || []).length;
       var aoa = [['라이더 코드', '라이더명', '배달대행사', '소속 허브', '수행허브코드', '미션명', '미션 상태', '적용 지역', '수행건', '인정건', '미인정건', '달성 단계', '지급금액', '지급시간',
                   '달성', '지급', '지급 예정', '취소 시각', '취소 처리자', '취소 사유']];
       rows.forEach(function (p) {
@@ -1713,7 +1716,7 @@
         wso['!cols'] = [20, 9, 14, 20, 34, 14, 10, 12, 22, 18, 7, 7, 7, 7, 7, 11, 11, 7, 22, 8].map(function (w) { return { wch: w }; });
         XLSX.utils.book_append_sheet(wb, wso, '주문단위');
         XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(cond), '조회조건');
-        d.resolve({ wb: wb, summary: '참여자 ' + comma(rows.length) + '명 · 주문 ' + comma(count) + '건' });
+        d.resolve({ wb: wb, summary: '라이더 ' + comma(riderCount) + '명 · 참여 ' + comma(rows.length) + '건 · 주문 ' + comma(count) + '건' });
       }
       next();
     }).fail(d.reject);
